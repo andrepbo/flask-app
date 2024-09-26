@@ -1,0 +1,24 @@
+version: "3"
+services:
+  app:
+    container_name: flask-app
+    build: .
+    ports:
+      - "5001:5000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_RUN_HOST=0.0.0.0
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    command: flask run
+
+  test:
+    container_name: flask-test
+    build: .
+    volumes:
+      - .:/app
+    depends_on:
+      - app
+    command: pytest test_app.py
